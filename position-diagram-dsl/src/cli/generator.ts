@@ -9,9 +9,10 @@ export function generateTikZ(model: Model, filePath: string, destination: string
     const generatedFilePath = `${path.join(data.destination, data.name)}.tex`;
 
     const text = new CompositeGeneratorNode();
+    // header
     text.append('\\documentclass[tikz]{standalone}', NL);
     text.append('\\begin{document}', NL);
-    text.append('\\begin{tikzpicture}[n/.style={rectangle,draw},e/.style={draw,-},t/.style={rectangle,draw=none,align=center}]', NL, NL);
+    text.append('\\begin{tikzpicture}[n/.style={rectangle,draw},e/.style={draw,->},t/.style={rectangle,draw=none,align=center,font=\\footnotesize}]', NL, NL);
 
     // nodes
     model.nodes.forEach(node => {
@@ -26,7 +27,7 @@ export function generateTikZ(model: Model, filePath: string, destination: string
 
     // edges
     model.edges.forEach(edge => {
-        text.append(`\\draw[e] `);
+        text.append(`\\path[e] `);
         text.append(printPosition(edge.from, true));
         text.append(printTextElement(edge.fromText));
         edge.parts.forEach(part => {
@@ -36,6 +37,7 @@ export function generateTikZ(model: Model, filePath: string, destination: string
         text.append(`;`, NL);
     });
 
+    // footer
     text.append(NL, '\\end{tikzpicture}', NL);
     text.append('\\end{document}', NL);
 
@@ -50,7 +52,11 @@ function printTextElement(text : TextElement | undefined) : string {
     if (text == undefined) {
         return "";
     }
-    let result = ` node[t] {${text.text}}`;
+    let result = ` node[t] {`;
+    if (text.text) {
+        result = result + text.text;
+    }
+    result = result + "}";
     return result;
 }
 
@@ -121,14 +127,31 @@ function printPositionAnchor(pos : PositionAnchor) : string {
     return pos.node.ref?.name + printAnchor(pos.nodeanchor, ".", "");
 }
 function printPositionIntersection(pos : PositionIntersection) : string {
-    let result = printPosition(pos.left, true) + " ";
-    if (pos.kind == '-|') {
-        result = result + "-|";
+    if (pos.left.$type == 'PositionIntersection' || pos.right.$type == 'PositionIntersection'
+            || pos.left.xshift || pos.left.yshift || pos.right.xshift || pos.right.yshift) {
+        // TikZ requires a complex syntax for complex cases
+        let result = "perpendicular cs:";
+        if (pos.kind == '-|') {
+            result = result + "horizontal line through={" + printPosition(pos.left, true) + "}";
+            result = result + ",";
+            result = result + "vertical line through={" + printPosition(pos.right, true) + "}";
+        } else {
+            result = result + "vertical line through={" + printPosition(pos.left, true) + "}";
+            result = result + ",";
+            result = result + "horizontal line through={" + printPosition(pos.right, true) + "}";
+        }
+        return result;
     } else {
-        result = result + "|-";
+        // TikZ supports an easier syntax for simple cases
+        let result = printPosition(pos.left, false) + " ";
+        if (pos.kind == '-|') {
+            result = result + "-|";
+        } else {
+            result = result + "|-";
+        }
+        result = result + " " + printPosition(pos.right, false);
+        return result;
     }
-    result = result + " " + printPosition(pos.right, true);
-    return result;
 }
 function printPositionAlongEdge(pos : PositionAlongEdge) : string {
     return "pos=" + pos.pos;
