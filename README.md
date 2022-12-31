@@ -11,7 +11,18 @@ Exploring Langium with a textual DSL for positions of elements in graphical diag
 
 ## Features of the DSL
 
-TODO
+* The `Model` of the graphical diagram consists of `Nodes` and `Edges`, which are identified by (unique) `names` and might have an additional `description`.
+* `Positions` are used to determine the positions of nodes and edges for the layout of the diagram:
+  * A `Node` has an optional `Position` (which is "(0mm,0mm)" if missing).
+  * An `Edge` starts at one `Position` and ends at another `Position` and might have arbitrary intermediate `Positions`. Each of these parts route the edge directly (`--`) or rectangular (`-|` first horizontal second vertical, `|-` first vertical second horizontal).
+* There are four kinds of `Positions`:
+  * `PositionNormal` specifies the position with x and y coordinates (`3mm,-2.4pt`) and allows to place an element at any absolute position.
+  * `PositionAnchor` specifies a position relative to a `Node` which is identified by its name (`node2`).
+  * `PositionIntersection` specifies a position related to two different positions at their rectangular intersection (`(node2) -| (2mm,3mm)`).
+  * `PositionAlongEdge` defines one point on the current `Edge` as position, specified as a floating value between 0 (the start point of the edge) and 1 (the end point of the edge). This is a special support for `TextElements` (see below).
+* Additionally, all kinds of `Positions` can be shifted in horizontal (`xshift=2mm`) and vertical (`yshift=-3.4pt`) direction.
+* Anchors of `Nodes` specify one point of the node, e.g. `center` for the middle of the node or `north west` for the upper left corner of the node. Anchors can be used to concretize a `PositionAnchor` (`node2.south`) or to determine the point of a node which is adjusted to be exactly at the specified position of this node.
+* `TextElements` allow to place some `text` at the beginng and the end of an `Edge`. Here, `PositionAlongEdge` can be used for positions of `TextElements` to align them along the edge.
 
 
 ## Validation of Constraints
@@ -22,7 +33,13 @@ TODO
 
 ## Code Generation
 
-TODO
+There are two different generators for this DSL:
+
+### TikZ code
+
+* Since the sketched DSL is strongly inspired by the TikZ language for typesetting vector graphics with LaTeX (https://www.ctan.org/pkg/pgf), the first generator takes a diagram specification conforming to the new DSL and provides a text document which can be rendered by pdfLaTeX into a scalable vector graphic embedded into a PDF file.
+
+### TODO
 
 
 ## Technical Details of the DSL
