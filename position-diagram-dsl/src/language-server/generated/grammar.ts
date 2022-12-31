@@ -20,7 +20,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
         "elements": [
           {
             "$type": "Assignment",
-            "feature": "persons",
+            "feature": "nodes",
             "operator": "+=",
             "terminal": {
               "$type": "RuleCall",
@@ -32,7 +32,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
           },
           {
             "$type": "Assignment",
-            "feature": "greetings",
+            "feature": "edges",
             "operator": "+=",
             "terminal": {
               "$type": "RuleCall",
@@ -53,22 +53,363 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
     },
     {
       "$type": "ParserRule",
-      "name": "Person",
+      "name": "Node",
       "definition": {
         "$type": "Group",
         "elements": [
           {
             "$type": "Keyword",
-            "value": "person"
+            "value": "node"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@8"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "anchor="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "anchor",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@14"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "at="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "position",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@3"
+                  },
+                  "arguments": [
+                    {
+                      "$type": "NamedArgument",
+                      "value": {
+                        "$type": "LiteralCondition",
+                        "true": false
+                      },
+                      "calledByName": false
+                    }
+                  ]
+                }
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Keyword",
+            "value": ";"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Edge",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "edge"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@8"
+            },
+            "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "name",
+            "feature": "fromText",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@4"
+                "$ref": "#/rules@9"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "from",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@3"
+              },
+              "arguments": [
+                {
+                  "$type": "NamedArgument",
+                  "value": {
+                    "$type": "LiteralCondition",
+                    "true": false
+                  },
+                  "calledByName": false
+                }
+              ]
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "routing",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@17"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "to",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@3"
+                  },
+                  "arguments": [
+                    {
+                      "$type": "NamedArgument",
+                      "value": {
+                        "$type": "LiteralCondition",
+                        "true": false
+                      },
+                      "calledByName": false
+                    }
+                  ]
+                }
+              }
+            ],
+            "cardinality": "*"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "toText",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@9"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Keyword",
+            "value": ";"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Position",
+      "parameters": [
+        {
+          "$type": "Parameter",
+          "name": "allowPositionAlongEdge"
+        }
+      ],
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "("
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "["
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Keyword",
+                    "value": "xshift="
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "xshift",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@13"
+                      },
+                      "arguments": []
+                    }
+                  }
+                ],
+                "cardinality": "?"
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Keyword",
+                    "value": "yshift="
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "yshift",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@13"
+                      },
+                      "arguments": []
+                    }
+                  }
+                ],
+                "cardinality": "?"
+              },
+              {
+                "$type": "Keyword",
+                "value": "]"
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@4"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@5"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@6"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Group",
+                "guardCondition": {
+                  "$type": "ParameterReference",
+                  "parameter": {
+                    "$ref": "#/rules@3/parameters@0"
+                  }
+                },
+                "elements": [
+                  {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@7"
+                    },
+                    "arguments": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "Keyword",
+            "value": ")"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "PositionNormal",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "posX",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@13"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": ","
+          },
+          {
+            "$type": "Assignment",
+            "feature": "posY",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@13"
               },
               "arguments": []
             }
@@ -84,17 +425,13 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
     },
     {
       "$type": "ParserRule",
-      "name": "Greeting",
+      "name": "PositionAnchor",
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "Hello"
-          },
-          {
             "$type": "Assignment",
-            "feature": "person",
+            "feature": "node",
             "operator": "=",
             "terminal": {
               "$type": "CrossReference",
@@ -104,7 +441,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@4"
+                  "$ref": "#/rules@11"
                 },
                 "arguments": []
               },
@@ -112,8 +449,258 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             }
           },
           {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "."
+              },
+              {
+                "$type": "Assignment",
+                "feature": "nodeanchor",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@14"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "PositionIntersection",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "left",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@3"
+              },
+              "arguments": [
+                {
+                  "$type": "NamedArgument",
+                  "value": {
+                    "$type": "LiteralCondition",
+                    "true": false
+                  },
+                  "calledByName": false
+                }
+              ]
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "kind",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@16"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "right",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@3"
+              },
+              "arguments": [
+                {
+                  "$type": "NamedArgument",
+                  "value": {
+                    "$type": "LiteralCondition",
+                    "true": false
+                  },
+                  "calledByName": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "PositionAlongEdge",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "pos",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@15"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ElementIdentification",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@11"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "description="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "description",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@12"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TextElement",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
             "$type": "Keyword",
-            "value": "!"
+            "value": "[text:"
+          },
+          {
+            "$type": "Keyword",
+            "value": "pos="
+          },
+          {
+            "$type": "Assignment",
+            "feature": "pos",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@3"
+              },
+              "arguments": [
+                {
+                  "$type": "NamedArgument",
+                  "value": {
+                    "$type": "LiteralCondition",
+                    "true": true
+                  },
+                  "calledByName": false
+                }
+              ]
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "text="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "text",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@12"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "label="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "label",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@11"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Keyword",
+            "value": "]"
           }
         ]
       },
@@ -139,34 +726,152 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
       "name": "ID",
       "definition": {
         "$type": "RegexToken",
-        "regex": "[_a-zA-Z][\\\\w_]*"
+        "regex": "[_a-zA-Z][-\\\\w_]*"
       },
       "fragment": false,
       "hidden": false
     },
     {
       "$type": "TerminalRule",
-      "name": "INT",
+      "name": "TEXT",
+      "definition": {
+        "$type": "RegexToken",
+        "regex": "\\"[-+\\\\s_a-zA-Z0-9]*\\""
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "POS_NUM",
       "type": {
         "$type": "ReturnType",
         "name": "number"
       },
       "definition": {
         "$type": "RegexToken",
-        "regex": "[0-9]+"
+        "regex": "[-+]?\\\\d+(\\\\.\\\\d+)?(mm|pt)"
       },
       "fragment": false,
       "hidden": false
     },
     {
+      "$type": "ParserRule",
+      "name": "POS_ANCHOR",
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "north_west"
+          },
+          {
+            "$type": "Keyword",
+            "value": "north_east"
+          },
+          {
+            "$type": "Keyword",
+            "value": "north"
+          },
+          {
+            "$type": "Keyword",
+            "value": "south_west"
+          },
+          {
+            "$type": "Keyword",
+            "value": "south_east"
+          },
+          {
+            "$type": "Keyword",
+            "value": "south"
+          },
+          {
+            "$type": "Keyword",
+            "value": "west"
+          },
+          {
+            "$type": "Keyword",
+            "value": "east"
+          },
+          {
+            "$type": "Keyword",
+            "value": "center"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
       "$type": "TerminalRule",
-      "name": "STRING",
+      "name": "POS_EDGE",
+      "type": {
+        "$type": "ReturnType",
+        "name": "number"
+      },
       "definition": {
         "$type": "RegexToken",
-        "regex": "\\"[^\\"]*\\"|'[^']*'"
+        "regex": "[-+]?\\\\d+(\\\\.\\\\d+)?"
       },
       "fragment": false,
       "hidden": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "INTERSECTION",
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "-|"
+          },
+          {
+            "$type": "Keyword",
+            "value": "|-"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ROUTING",
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "--"
+          },
+          {
+            "$type": "Keyword",
+            "value": "-|"
+          },
+          {
+            "$type": "Keyword",
+            "value": "|-"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
       "$type": "TerminalRule",

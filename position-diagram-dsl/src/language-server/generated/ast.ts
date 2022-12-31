@@ -6,22 +6,34 @@
 /* eslint-disable */
 import { AstNode, AbstractAstReflection, Reference, ReferenceInfo, TypeMetaData } from 'langium';
 
-export interface Greeting extends AstNode {
+export type INTERSECTION = '-|' | '|-';
+
+export type POS_ANCHOR = 'center' | 'east' | 'north' | 'north_east' | 'north_west' | 'south' | 'south_east' | 'south_west' | 'west';
+
+export type ROUTING = '--' | '-|' | '|-';
+
+export interface Edge extends AstNode {
     readonly $container: Model;
-    readonly $type: 'Greeting';
-    person: Reference<Person>
+    readonly $type: 'Edge';
+    description?: string
+    from: Position
+    fromText?: TextElement
+    name: string
+    routing: Array<ROUTING>
+    to: Array<Position>
+    toText?: TextElement
 }
 
-export const Greeting = 'Greeting';
+export const Edge = 'Edge';
 
-export function isGreeting(item: unknown): item is Greeting {
-    return reflection.isInstance(item, Greeting);
+export function isEdge(item: unknown): item is Edge {
+    return reflection.isInstance(item, Edge);
 }
 
 export interface Model extends AstNode {
     readonly $type: 'Model';
-    greetings: Array<Greeting>
-    persons: Array<Person>
+    edges: Array<Edge>
+    nodes: Array<Node>
 }
 
 export const Model = 'Model';
@@ -30,32 +42,126 @@ export function isModel(item: unknown): item is Model {
     return reflection.isInstance(item, Model);
 }
 
-export interface Person extends AstNode {
+export interface Node extends AstNode {
     readonly $container: Model;
-    readonly $type: 'Person';
+    readonly $type: 'Node';
+    anchor?: POS_ANCHOR
+    description?: string
     name: string
+    position?: Position
 }
 
-export const Person = 'Person';
+export const Node = 'Node';
 
-export function isPerson(item: unknown): item is Person {
-    return reflection.isInstance(item, Person);
+export function isNode(item: unknown): item is Node {
+    return reflection.isInstance(item, Node);
+}
+
+export interface Position extends AstNode {
+    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $type: 'Position' | 'PositionAlongEdge' | 'PositionAnchor' | 'PositionIntersection' | 'PositionNormal';
+    xshift: number
+    yshift: number
+}
+
+export const Position = 'Position';
+
+export function isPosition(item: unknown): item is Position {
+    return reflection.isInstance(item, Position);
+}
+
+export interface TextElement extends AstNode {
+    readonly $container: Edge;
+    readonly $type: 'TextElement';
+    label?: string
+    pos: Position
+    text?: string
+}
+
+export const TextElement = 'TextElement';
+
+export function isTextElement(item: unknown): item is TextElement {
+    return reflection.isInstance(item, TextElement);
+}
+
+export interface PositionAlongEdge extends Position {
+    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $type: 'PositionAlongEdge';
+    pos: number
+}
+
+export const PositionAlongEdge = 'PositionAlongEdge';
+
+export function isPositionAlongEdge(item: unknown): item is PositionAlongEdge {
+    return reflection.isInstance(item, PositionAlongEdge);
+}
+
+export interface PositionAnchor extends Position {
+    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $type: 'PositionAnchor';
+    node: Reference<Node>
+    nodeanchor?: POS_ANCHOR
+}
+
+export const PositionAnchor = 'PositionAnchor';
+
+export function isPositionAnchor(item: unknown): item is PositionAnchor {
+    return reflection.isInstance(item, PositionAnchor);
+}
+
+export interface PositionIntersection extends Position {
+    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $type: 'PositionIntersection';
+    kind: INTERSECTION
+    left: Position
+    right: Position
+}
+
+export const PositionIntersection = 'PositionIntersection';
+
+export function isPositionIntersection(item: unknown): item is PositionIntersection {
+    return reflection.isInstance(item, PositionIntersection);
+}
+
+export interface PositionNormal extends Position {
+    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $type: 'PositionNormal';
+    posX: number
+    posY: number
+}
+
+export const PositionNormal = 'PositionNormal';
+
+export function isPositionNormal(item: unknown): item is PositionNormal {
+    return reflection.isInstance(item, PositionNormal);
 }
 
 export interface PositionsInDiagramsAstType {
-    Greeting: Greeting
+    Edge: Edge
     Model: Model
-    Person: Person
+    Node: Node
+    Position: Position
+    PositionAlongEdge: PositionAlongEdge
+    PositionAnchor: PositionAnchor
+    PositionIntersection: PositionIntersection
+    PositionNormal: PositionNormal
+    TextElement: TextElement
 }
 
 export class PositionsInDiagramsAstReflection extends AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return ['Greeting', 'Model', 'Person'];
+        return ['Edge', 'Model', 'Node', 'Position', 'PositionAlongEdge', 'PositionAnchor', 'PositionIntersection', 'PositionNormal', 'TextElement'];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
         switch (subtype) {
+            case PositionAlongEdge:
+            case PositionAnchor:
+            case PositionIntersection:
+            case PositionNormal: {
+                return this.isSubtype(Position, supertype);
+            }
             default: {
                 return false;
             }
@@ -65,8 +171,8 @@ export class PositionsInDiagramsAstReflection extends AbstractAstReflection {
     getReferenceType(refInfo: ReferenceInfo): string {
         const referenceId = `${refInfo.container.$type}:${refInfo.property}`;
         switch (referenceId) {
-            case 'Greeting:person': {
-                return Person;
+            case 'PositionAnchor:node': {
+                return Node;
             }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);
@@ -76,12 +182,21 @@ export class PositionsInDiagramsAstReflection extends AbstractAstReflection {
 
     getTypeMetaData(type: string): TypeMetaData {
         switch (type) {
+            case 'Edge': {
+                return {
+                    name: 'Edge',
+                    mandatory: [
+                        { name: 'routing', type: 'array' },
+                        { name: 'to', type: 'array' }
+                    ]
+                };
+            }
             case 'Model': {
                 return {
                     name: 'Model',
                     mandatory: [
-                        { name: 'greetings', type: 'array' },
-                        { name: 'persons', type: 'array' }
+                        { name: 'edges', type: 'array' },
+                        { name: 'nodes', type: 'array' }
                     ]
                 };
             }

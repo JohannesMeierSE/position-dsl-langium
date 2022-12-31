@@ -10,17 +10,7 @@
     },
     {
       "name": "keyword.control.positions-in-diagrams",
-      "match": "\\b(Hello|person)\\b"
-    },
-    {
-      "name": "string.quoted.double.positions-in-diagrams",
-      "begin": "\"",
-      "end": "\""
-    },
-    {
-      "name": "string.quoted.single.positions-in-diagrams",
-      "begin": "'",
-      "end": "'"
+      "match": "\\b(center|east|edge|node|north|north_east|north_west|south|south_east|south_west|west)\\b|\\b(anchor=|at=|description=|label=|pos=|text=|xshift=|yshift=)\\B|\\B(\\[text:)\\B"
     }
   ],
   "repository": {
