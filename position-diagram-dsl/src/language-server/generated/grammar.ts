@@ -768,7 +768,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
       "name": "POS_NUM",
       "type": {
         "$type": "ReturnType",
-        "name": "number"
+        "name": "string"
       },
       "definition": {
         "$type": "RegexToken",

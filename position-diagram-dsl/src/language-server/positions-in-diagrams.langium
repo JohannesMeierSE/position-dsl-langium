@@ -33,7 +33,7 @@ TextElement:
 hidden terminal WS: /\s+/;
 terminal ID: /[_a-zA-Z][-\w_]*/;
 terminal TEXT: /"[-+\s_a-zA-Z0-9]*"/;
-terminal POS_NUM returns number: /[-+]?\d+(\.\d+)?(mm|pt)/;
+terminal POS_NUM returns string: /[-+]?\d+(\.\d+)?(mm|pt)/;
 POS_ANCHOR returns string: 'north_west' | 'north_east' | 'north'
     | 'south_west' | 'south_east' | 'south' | 'west' | 'east' | 'center'; // a "data type rule" (without 'terminal' keyword!)
 terminal POS_EDGE returns number: /[-+]?\d+(\.\d+)?/; // strong alternative: /(1\.0)|1|(0\.\d+)|0/

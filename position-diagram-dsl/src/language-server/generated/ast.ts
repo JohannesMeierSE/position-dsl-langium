@@ -72,8 +72,8 @@ export function isNode(item: unknown): item is Node {
 export interface Position extends AstNode {
     readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'Position' | 'PositionAlongEdge' | 'PositionAnchor' | 'PositionIntersection' | 'PositionNormal';
-    xshift: number
-    yshift: number
+    xshift: string
+    yshift: string
 }
 
 export const Position = 'Position';
@@ -138,8 +138,8 @@ export function isPositionIntersection(item: unknown): item is PositionIntersect
 export interface PositionNormal extends Position {
     readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'PositionNormal';
-    posX: number
-    posY: number
+    posX: string
+    posY: string
 }
 
 export const PositionNormal = 'PositionNormal';
