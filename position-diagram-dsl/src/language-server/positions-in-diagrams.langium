@@ -7,7 +7,9 @@ Node:
     'node' ElementIdentification ('anchor=' anchor=POS_ANCHOR)? ('at=' position=Position<false>)? ';';
 
 Edge:
-    'edge' ElementIdentification fromText=TextElement? from=Position<false> (routing+=ROUTING to+=Position<false>)* toText=TextElement? ';';
+    'edge' ElementIdentification fromText=TextElement? from=Position<false> parts+=EdgePart+ toText=TextElement? ';';
+EdgePart:
+    routing=ROUTING pos=Position<false>;
 
 Position<allowPositionAlongEdge>:
     '(' ('[' ('xshift=' xshift=POS_NUM)? ('yshift=' yshift=POS_NUM)? ']')?

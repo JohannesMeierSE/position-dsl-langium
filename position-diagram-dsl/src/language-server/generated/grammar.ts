@@ -64,7 +64,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@8"
+              "$ref": "#/rules@9"
             },
             "arguments": []
           },
@@ -82,7 +82,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@14"
+                    "$ref": "#/rules@15"
                   },
                   "arguments": []
                 }
@@ -104,7 +104,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@3"
+                    "$ref": "#/rules@4"
                   },
                   "arguments": [
                     {
@@ -147,7 +147,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@8"
+              "$ref": "#/rules@9"
             },
             "arguments": []
           },
@@ -158,7 +158,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@9"
+                "$ref": "#/rules@10"
               },
               "arguments": []
             },
@@ -171,7 +171,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@3"
+                "$ref": "#/rules@4"
               },
               "arguments": [
                 {
@@ -186,43 +186,17 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             }
           },
           {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Assignment",
-                "feature": "routing",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@17"
-                  },
-                  "arguments": []
-                }
+            "$type": "Assignment",
+            "feature": "parts",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@3"
               },
-              {
-                "$type": "Assignment",
-                "feature": "to",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@3"
-                  },
-                  "arguments": [
-                    {
-                      "$type": "NamedArgument",
-                      "value": {
-                        "$type": "LiteralCondition",
-                        "true": false
-                      },
-                      "calledByName": false
-                    }
-                  ]
-                }
-              }
-            ],
-            "cardinality": "*"
+              "arguments": []
+            },
+            "cardinality": "+"
           },
           {
             "$type": "Assignment",
@@ -231,7 +205,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@9"
+                "$ref": "#/rules@10"
               },
               "arguments": []
             },
@@ -240,6 +214,54 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
           {
             "$type": "Keyword",
             "value": ";"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "EdgePart",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "routing",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@18"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "pos",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@4"
+              },
+              "arguments": [
+                {
+                  "$type": "NamedArgument",
+                  "value": {
+                    "$type": "LiteralCondition",
+                    "true": false
+                  },
+                  "calledByName": false
+                }
+              ]
+            }
           }
         ]
       },
@@ -287,7 +309,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@13"
+                        "$ref": "#/rules@14"
                       },
                       "arguments": []
                     }
@@ -309,7 +331,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@13"
+                        "$ref": "#/rules@14"
                       },
                       "arguments": []
                     }
@@ -330,13 +352,6 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@4"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
                   "$ref": "#/rules@5"
                 },
                 "arguments": []
@@ -349,18 +364,25 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "arguments": []
               },
               {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@7"
+                },
+                "arguments": []
+              },
+              {
                 "$type": "Group",
                 "guardCondition": {
                   "$type": "ParameterReference",
                   "parameter": {
-                    "$ref": "#/rules@3/parameters@0"
+                    "$ref": "#/rules@4/parameters@0"
                   }
                 },
                 "elements": [
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@7"
+                      "$ref": "#/rules@8"
                     },
                     "arguments": []
                   }
@@ -393,7 +415,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@13"
+                "$ref": "#/rules@14"
               },
               "arguments": []
             }
@@ -409,7 +431,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@13"
+                "$ref": "#/rules@14"
               },
               "arguments": []
             }
@@ -441,7 +463,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@11"
+                  "$ref": "#/rules@12"
                 },
                 "arguments": []
               },
@@ -462,7 +484,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@14"
+                    "$ref": "#/rules@15"
                   },
                   "arguments": []
                 }
@@ -492,7 +514,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@3"
+                "$ref": "#/rules@4"
               },
               "arguments": [
                 {
@@ -513,7 +535,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@16"
+                "$ref": "#/rules@17"
               },
               "arguments": []
             }
@@ -525,7 +547,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@3"
+                "$ref": "#/rules@4"
               },
               "arguments": [
                 {
@@ -558,7 +580,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@15"
+            "$ref": "#/rules@16"
           },
           "arguments": []
         }
@@ -584,7 +606,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@11"
+                "$ref": "#/rules@12"
               },
               "arguments": []
             }
@@ -603,7 +625,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@12"
+                    "$ref": "#/rules@13"
                   },
                   "arguments": []
                 }
@@ -640,7 +662,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@3"
+                "$ref": "#/rules@4"
               },
               "arguments": [
                 {
@@ -668,7 +690,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@12"
+                    "$ref": "#/rules@13"
                   },
                   "arguments": []
                 }
@@ -690,7 +712,7 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@11"
+                    "$ref": "#/rules@12"
                   },
                   "arguments": []
                 }

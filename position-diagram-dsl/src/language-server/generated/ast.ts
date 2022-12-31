@@ -19,8 +19,7 @@ export interface Edge extends AstNode {
     from: Position
     fromText?: TextElement
     name: string
-    routing: Array<ROUTING>
-    to: Array<Position>
+    parts: Array<EdgePart>
     toText?: TextElement
 }
 
@@ -28,6 +27,19 @@ export const Edge = 'Edge';
 
 export function isEdge(item: unknown): item is Edge {
     return reflection.isInstance(item, Edge);
+}
+
+export interface EdgePart extends AstNode {
+    readonly $container: Edge;
+    readonly $type: 'EdgePart';
+    pos: Position
+    routing: ROUTING
+}
+
+export const EdgePart = 'EdgePart';
+
+export function isEdgePart(item: unknown): item is EdgePart {
+    return reflection.isInstance(item, EdgePart);
 }
 
 export interface Model extends AstNode {
@@ -58,7 +70,7 @@ export function isNode(item: unknown): item is Node {
 }
 
 export interface Position extends AstNode {
-    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'Position' | 'PositionAlongEdge' | 'PositionAnchor' | 'PositionIntersection' | 'PositionNormal';
     xshift: number
     yshift: number
@@ -85,7 +97,7 @@ export function isTextElement(item: unknown): item is TextElement {
 }
 
 export interface PositionAlongEdge extends Position {
-    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'PositionAlongEdge';
     pos: number
 }
@@ -97,7 +109,7 @@ export function isPositionAlongEdge(item: unknown): item is PositionAlongEdge {
 }
 
 export interface PositionAnchor extends Position {
-    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'PositionAnchor';
     node: Reference<Node>
     nodeanchor?: POS_ANCHOR
@@ -110,7 +122,7 @@ export function isPositionAnchor(item: unknown): item is PositionAnchor {
 }
 
 export interface PositionIntersection extends Position {
-    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'PositionIntersection';
     kind: INTERSECTION
     left: Position
@@ -124,7 +136,7 @@ export function isPositionIntersection(item: unknown): item is PositionIntersect
 }
 
 export interface PositionNormal extends Position {
-    readonly $container: Edge | Node | PositionIntersection | TextElement;
+    readonly $container: Edge | EdgePart | Node | PositionIntersection | TextElement;
     readonly $type: 'PositionNormal';
     posX: number
     posY: number
@@ -138,6 +150,7 @@ export function isPositionNormal(item: unknown): item is PositionNormal {
 
 export interface PositionsInDiagramsAstType {
     Edge: Edge
+    EdgePart: EdgePart
     Model: Model
     Node: Node
     Position: Position
@@ -151,7 +164,7 @@ export interface PositionsInDiagramsAstType {
 export class PositionsInDiagramsAstReflection extends AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return ['Edge', 'Model', 'Node', 'Position', 'PositionAlongEdge', 'PositionAnchor', 'PositionIntersection', 'PositionNormal', 'TextElement'];
+        return ['Edge', 'EdgePart', 'Model', 'Node', 'Position', 'PositionAlongEdge', 'PositionAnchor', 'PositionIntersection', 'PositionNormal', 'TextElement'];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
@@ -186,8 +199,7 @@ export class PositionsInDiagramsAstReflection extends AbstractAstReflection {
                 return {
                     name: 'Edge',
                     mandatory: [
-                        { name: 'routing', type: 'array' },
-                        { name: 'to', type: 'array' }
+                        { name: 'parts', type: 'array' }
                     ]
                 };
             }
