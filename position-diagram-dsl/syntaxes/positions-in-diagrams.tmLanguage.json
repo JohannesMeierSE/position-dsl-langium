@@ -1,0 +1,57 @@
+{
+  "name": "positions-in-diagrams",
+  "scopeName": "source.positions-in-diagrams",
+  "fileTypes": [
+    ".posdia"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.positions-in-diagrams",
+      "match": "\\b(Hello|person)\\b"
+    },
+    {
+      "name": "string.quoted.double.positions-in-diagrams",
+      "begin": "\"",
+      "end": "\""
+    },
+    {
+      "name": "string.quoted.single.positions-in-diagrams",
+      "begin": "'",
+      "end": "'"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.positions-in-diagrams",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.positions-in-diagrams"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.positions-in-diagrams"
+            }
+          }
+        },
+        {
+          "begin": "//",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.positions-in-diagrams"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.positions-in-diagrams"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+    "projectName": "PositionsInDiagrams",
+    "languages": [{
+        "id": "positions-in-diagrams",
+        "grammar": "src/language-server/positions-in-diagrams.langium",
+        "fileExtensions": [".posdia"],
+        "textMate": {
+            "out": "syntaxes/positions-in-diagrams.tmLanguage.json"
+        }
+    }],
+    "out": "src/language-server/generated"
+}
