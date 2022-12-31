@@ -28,7 +28,7 @@ fragment ElementIdentification:
     name=ID ('description=' description=TEXT)?;
 
 TextElement:
-    '[text:' 'pos=' pos=Position<true> ('text=' text=TEXT)? ('label=' label=ID)? ']';
+    '[text:' ('anchor=' anchor=POS_ANCHOR)? 'pos=' pos=Position<true> ('text=' text=TEXT)? ('name=' name=ID)? ']';
 
 hidden terminal WS: /\s+/;
 terminal ID: /[_a-zA-Z][-\w_]*/;

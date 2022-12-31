@@ -85,7 +85,8 @@ export function isPosition(item: unknown): item is Position {
 export interface TextElement extends AstNode {
     readonly $container: Edge;
     readonly $type: 'TextElement';
-    label?: string
+    anchor?: POS_ANCHOR
+    name?: string
     pos: Position
     text?: string
 }

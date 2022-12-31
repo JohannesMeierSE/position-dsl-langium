@@ -652,6 +652,28 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "value": "[text:"
           },
           {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": "anchor="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "anchor",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@15"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
             "$type": "Keyword",
             "value": "pos="
           },
@@ -703,11 +725,11 @@ export const PositionsInDiagramsGrammar = (): Grammar => loadedPositionsInDiagra
             "elements": [
               {
                 "$type": "Keyword",
-                "value": "label="
+                "value": "name="
               },
               {
                 "$type": "Assignment",
-                "feature": "label",
+                "feature": "name",
                 "operator": "=",
                 "terminal": {
                   "$type": "RuleCall",
