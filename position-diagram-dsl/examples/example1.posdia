@@ -1,0 +1,10 @@
+node n1 description="my node" at=(2mm,-3mm);
+node n2 anchor=west at=(n1.west);
+node n3 at=(([xshift=+2mm yshift=-3.2mm] n1) -| (n2.north_east));
+node n4 at=(n3);
+
+edge e1 [text: pos=(-0.1) text="my text" label=myLabel] (n1) -- (2mm,-3.2pt) -| (n3.west) [text: pos=(1.0)];
+edge e2 (n2) |- (n3);
+
+node n5 at=(n2);
+edge e3 (n1) -- ([xshift=+2mm yshift=-1mm] n2.north_east);
