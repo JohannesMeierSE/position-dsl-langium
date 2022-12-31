@@ -24,6 +24,12 @@ Exploring Langium with a textual DSL for positions of elements in graphical diag
 * Anchors of `Nodes` specify one point of the node, e.g. `center` for the middle of the node or `north west` for the upper left corner of the node. Anchors can be used to concretize a `PositionAnchor` (`node2.south`) or to determine the point of a node which is adjusted to be exactly at the specified position of this node.
 * `TextElements` allow to place some `text` at the beginng and the end of an `Edge`. Here, `PositionAlongEdge` can be used for positions of `TextElements` to align them along the edge.
 
+## Example
+
+Here is an example, which conforms to the Langium grammer:
+
+![example1.posdia](position-diagram-dsl/examples/example1.posdia)
+
 
 ## Validation of Constraints
 
