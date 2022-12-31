@@ -12,7 +12,7 @@ export function generateTikZ(model: Model, filePath: string, destination: string
     // header
     text.append('\\documentclass[tikz]{standalone}', NL);
     text.append('\\begin{document}', NL);
-    text.append('\\begin{tikzpicture}[n/.style={rectangle,draw},e/.style={draw,->},t/.style={rectangle,draw=none,align=center,font=\\footnotesize}]', NL, NL);
+    text.append('\\begin{tikzpicture}[n/.style={rectangle,draw,align=center},e/.style={draw,->},t/.style={rectangle,draw=none,align=center,font=\\footnotesize}]', NL, NL);
 
     // nodes
     model.nodes.forEach(node => {
@@ -29,12 +29,14 @@ export function generateTikZ(model: Model, filePath: string, destination: string
     model.edges.forEach(edge => {
         text.append(`\\path[e] `);
         text.append(printPosition(edge.from, true));
-        text.append(printTextElement(edge.fromText));
         edge.parts.forEach(part => {
             text.append(" " + part.routing + " " + printPosition(part.pos, true));
         });
-        text.append(printTextElement(edge.toText));
+        text.append(printTextElementInline(edge.fromText));
+        text.append(printTextElementInline(edge.toText));
         text.append(`;`, NL);
+        text.append(printTextElementSeparate(edge.fromText));
+        text.append(printTextElementSeparate(edge.toText));
     });
 
     // footer
@@ -48,15 +50,52 @@ export function generateTikZ(model: Model, filePath: string, destination: string
     return generatedFilePath;
 }
 
-function printTextElement(text : TextElement | undefined) : string {
-    if (text == undefined) {
+function printTextElementInline(text : TextElement | undefined) : string {
+    if (text == undefined || text.pos.$type !== 'PositionAlongEdge') {
         return "";
     }
-    let result = ` node[t] {`;
+    let result = ` node[t`;
+    result = result + printAnchor(text.anchor, ", anchor=", "");
+    // position
+    result = result + ", pos=" + (<PositionAlongEdge> text.pos).pos;
+    if (text.pos.xshift) {
+        result = result + ", xshift=" + text.pos.xshift;
+    }
+    if (text.pos.yshift) {
+        result = result + ", yshift=" + text.pos.yshift;
+    }
+    result = result + "]";
+
+    if (text.name) {
+        result = result + "(" + text.name + ")";
+    }
+    result = result + " {";
     if (text.text) {
         result = result + text.text;
     }
     result = result + "}";
+    return result;
+}
+
+// if the text element has no PositionAlongEdge, it is "detached" from the edge and will be rendered similar to a "normal node"
+function printTextElementSeparate(text : TextElement | undefined) : string {
+    if (text == undefined || text.pos.$type == 'PositionAlongEdge') {
+        return "";
+    }
+    let result = `\\node[t`;
+    result = result + printAnchor(text.anchor, ", anchor=", "");
+    result = result + "]";
+
+    if (text.name) {
+        result = result + " (" + text.name + ")";
+    }
+    // position
+    result = result + " at " + printPosition(text.pos, true);
+    result = result + " {";
+    if (text.text) {
+        result = result + text.text;
+    }
+    result = result + "};\n";
     return result;
 }
 
