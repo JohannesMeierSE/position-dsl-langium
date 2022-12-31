@@ -48,6 +48,20 @@ There are two different generators for this DSL:
 ### TODO
 
 
+## Test the DSL
+
+There are different options to test the DSL:
+
+* Work with the sourcecode of this project (and read https://langium.org/docs/getting-started/ before):
+  * checkout this repository: `git clone https://github.com/JohannesMeierSE/position-dsl-langium.git`, `cd position-dsl-langium/position-diagram-dsl/`
+  * generate JavaScript from the provided TypeScript code: `npm run build`
+  * use VS Code to start the project as VS Code extension in a new instance of VS Code and use the custom editor to write text files conforming to the grammar
+  * TODO: run `./bin/cli generate examples/example1.posdia` to generate ...
+* Use the official Playground at https://langium.org/playground/:
+  * Copy the grammar definition in [position-diagram-dsl/src/language-server/positions-in-diagrams.langium](position-diagram-dsl/src/language-server/positions-in-diagrams.langium) into the left editor
+  * Use the editor on the right to write text conforming to the grammar or copy this example into the right editor: [position-diagram-dsl/examples/example1.posdia](position-diagram-dsl/examples/example1.posdia)
+ 
+
 ## Technical Details of the DSL
 
 * Extension name: position-diagram-dsl
