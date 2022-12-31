@@ -14,3 +14,4 @@ Thumbs.db
 
 # project specific stuff
 out/
+generated/
