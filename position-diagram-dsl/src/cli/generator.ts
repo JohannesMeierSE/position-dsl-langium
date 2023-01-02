@@ -12,7 +12,7 @@ export function generateTikZ(model: Model, filePath: string, destination: string
     // header
     text.append('\\documentclass[tikz]{standalone}', NL);
     text.append('\\begin{document}', NL);
-    text.append('\\begin{tikzpicture}[n/.style={rectangle,draw,align=center},e/.style={draw,->},t/.style={rectangle,draw=none,align=center,font=\\footnotesize}]', NL, NL);
+    text.append('\\begin{tikzpicture}[n/.style={rectangle,draw,align=center},e/.style={draw,->},t/.style={rectangle,draw=none,fill=black!10,align=center,font=\\footnotesize}]', NL, NL);
 
     // nodes
     model.nodes.forEach(node => {
