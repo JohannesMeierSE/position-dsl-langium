@@ -159,7 +159,7 @@ function printPosition(pos : Position, brackets : boolean) : string {
     return result;
 }
 
-function printPositionNormal(pos : PositionNormal) : string {
+export function printPositionNormal(pos : PositionNormal) : string {
     return pos.posX + ", " + pos.posY;
 }
 function printPositionAnchor(pos : PositionAnchor) : string {
