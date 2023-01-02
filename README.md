@@ -29,13 +29,6 @@ The textual DSL describes a graphical diagram (or network or graph) consisting o
 The definition of a corresponding grammar is realized in [position-diagram-dsl/src/language-server/positions-in-diagrams.langium](position-diagram-dsl/src/language-server/positions-in-diagrams.langium).
 
 
-## Example
-
-Here is an example, which conforms to the Langium grammer:
-
-![examples/example1.posdia](position-diagram-dsl/examples/example1.posdia)
-
-
 ## Validation of Constraints
 
 * `Nodes` and `Edges` must have unique `names`.
@@ -56,6 +49,18 @@ There are two different generators for this DSL:
 * This generator is realized in [position-diagram-dsl/src/cli/generator.ts](position-diagram-dsl/src/cli/generator.ts).
 
 ### TODO another generator
+
+
+## Example
+
+Here is an example, which conforms to the Langium grammer:
+![examples/example1.posdia](position-diagram-dsl/examples/example1.posdia)
+
+The corresponding result of the TikZ generator (see above) is:
+![examples/example1.tex](position-diagram-dsl/examples/example1.tex)
+
+Using `pdflatex` will produce this PDF:
+![examples/example1.pdf](position-diagram-dsl/examples/example1.pdf)
 
 
 ## Test the DSL
