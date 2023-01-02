@@ -71,6 +71,7 @@ There are different options to test the DSL:
   * as preparation, read https://langium.org/docs/getting-started/ before, install VS Code and Node.js and install all Langium packages (`npm install -
 g yo langium generator-langium langium-cli`)
   * checkout this repository: `git clone https://github.com/JohannesMeierSE/position-dsl-langium.git`, `cd position-dsl-langium/position-diagram-dsl/`
+  * install required dependencies with `npm install` locally (these dependencies are located in `node_modules/` afterwards)
   * generate JavaScript from the provided TypeScript code: `npm run build`
   * use VS Code to start the project as VS Code extension in a new instance of VS Code and use the custom editor to write text files conforming to the grammar (or try the provided example in [`examples/example1.posdia`](position-diagram-dsl/examples/example1.posdia))
   * run one of the generators (see above)
